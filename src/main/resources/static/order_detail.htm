@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html>
 <head>
-    <title>订单详情</title>
+    <title>选课详情</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <!-- jquery -->
     <script type="text/javascript" src="/js/jquery.min.js"></script>
@@ -20,39 +20,31 @@
 </head>
 <body>
 <div class="panel panel-default">
-  <div class="panel-heading">秒杀订单详情</div>
+  <div class="panel-heading">选课详情</div>
   <table class="table" id="goodslist">
         <tr>  
-        <td>商品名称</td>  
+        <td>课程名称</td>
         <td colspan="3" id="goodsName"></td> 
      </tr>  
      <tr>  
-        <td>商品图片</td>  
+        <td>课程图片</td>
         <td colspan="2"><img  id="goodsImg" width="200" height="200" /></td>  
      </tr>
       <tr>  
-        <td>订单价格</td>  
+        <td>课程学分</td>
         <td colspan="2"  id="orderPrice"></td>  
      </tr>
      <tr>
-     		<td>下单时间</td>  
+     		<td>选课时间</td>
         	<td id="createDate" colspan="2"></td>  
      </tr>
      <tr>
-     	<td>订单状态</td>  
+     	<td>选课状态</td>
         <td id="orderStatus">
         </td>  
         <td>
-        	<button class="btn btn-primary btn-block" type="submit" id="payButton">立即支付</button>
+        	<button class="btn btn-primary btn-block" type="submit" id="payButton">立即确认</button>
         </td>
-     </tr>
-      <tr>
-     		<td>收货人</td>  
-        	<td colspan="2">XXX  15008460710</td>
-     </tr>
-     <tr>
-     		<td>收货地址</td>  
-        	<td colspan="2">四川省成都市成华区电子科技大学沙河校区</td>
      </tr>
   </table>
 </div>
@@ -61,16 +53,16 @@
 <script>
 function render(detail){
 	var goods = detail.goods;
-	var order = detail.order;
+	var order = detail.orderInfo;
 	$("#goodsName").text(goods.goodsName);
 	$("#goodsImg").attr("src", goods.goodsImg);
 	$("#orderPrice").text(order.goodsPrice);
 	$("#createDate").text(new Date(order.createDate).format("yyyy-MM-dd hh:mm:ss"));
 	var status = "";
 	if(order.status == 0){
-		status = "未支付"
+		status = "未确认"
 	}else if(order.status == 1){
-		status = "待发货";
+		status = "待确认";
 	}
 	$("#orderStatus").text(status);
 	
