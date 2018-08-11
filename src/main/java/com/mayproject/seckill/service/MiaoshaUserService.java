@@ -7,6 +7,7 @@ import com.mayproject.seckill.redis.MiaoshaUserKey;
 import com.mayproject.seckill.redis.RedisService;
 import com.mayproject.seckill.result.CodeMsg;
 import com.mayproject.seckill.util.MD5Util;
+import com.mayproject.seckill.util.MethodLog;
 import com.mayproject.seckill.util.UUIDUtil;
 import com.mayproject.seckill.vo.LoginVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,7 @@ public class MiaoshaUserService {
         return user;
     }
 
+    @MethodLog(methodName = "登录动作")
     public String login(HttpServletResponse httpServletResponse, LoginVo loginVo){
         if(loginVo == null){
             throw new GrobalException(CodeMsg.SERVER_ERROR);

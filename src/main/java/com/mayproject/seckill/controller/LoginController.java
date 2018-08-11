@@ -3,6 +3,7 @@ package com.mayproject.seckill.controller;
 import com.mayproject.seckill.redis.RedisService;
 import com.mayproject.seckill.result.Result;
 import com.mayproject.seckill.service.MiaoshaUserService;
+import com.mayproject.seckill.util.MethodLog;
 import com.mayproject.seckill.vo.LoginVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

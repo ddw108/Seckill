@@ -8,6 +8,7 @@ import com.mayproject.seckill.domain.OrderInfo;
 import com.mayproject.seckill.redis.MiaoshaKey;
 import com.mayproject.seckill.redis.RedisService;
 import com.mayproject.seckill.util.MD5Util;
+import com.mayproject.seckill.util.MethodLog;
 import com.mayproject.seckill.util.UUIDUtil;
 import com.mayproject.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,7 @@ public class MiaoshaService {
     RedisService redisService;
 
     @Transactional
+    @MethodLog(methodName = "秒杀动作")
     public OrderInfo miaosha(MiaoshaUser miaoshaUser,GoodsVo goodsVo){
         //减库存
         boolean res = goodsService.reduceStock(goodsVo);
