@@ -6,6 +6,7 @@ import com.mayproject.seckill.domain.MiaoshaUser;
 import com.mayproject.seckill.domain.OrderInfo;
 import com.mayproject.seckill.redis.OrderKey;
 import com.mayproject.seckill.redis.RedisService;
+import com.mayproject.seckill.util.MethodLog;
 import com.mayproject.seckill.vo.GoodsVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,6 +32,7 @@ public class OrderService {
     }
 
     @Transactional
+    @MethodLog(methodName = "下单动作")
     public OrderInfo createOrder(MiaoshaUser miaoshaUser, GoodsVo goodsVo){
         OrderInfo orderInfo = new OrderInfo();
         orderInfo.setCreateDate(new Date());

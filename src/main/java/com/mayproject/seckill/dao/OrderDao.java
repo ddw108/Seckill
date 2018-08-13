@@ -3,8 +3,10 @@ package com.mayproject.seckill.dao;
 import com.mayproject.seckill.domain.MiaoshaOrder;
 import com.mayproject.seckill.domain.OrderInfo;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Component;
 
 @Mapper
+@Component
 public interface OrderDao {
 
     @Select("select * from order_info where id = #{orderId}")

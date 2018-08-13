@@ -3,12 +3,15 @@ package com.mayproject.seckill.util;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.reflect.MethodSignature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StopWatch;
 
 import java.lang.reflect.Method;
+import java.text.MessageFormat;
 
 @Aspect
 @Configuration
@@ -16,43 +19,25 @@ public class LogAspect {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogAspect.class);
 
-    @Around("@annotation(com.mayproject.seckill.util.MethodLog)")
-    public void doAround(ProceedingJoinPoint joinPoint) throws Throwable {
-        StopWatch clock = new StopWatch();
-        clock.start();
-        try {
-            joinPoint.proceed();
-        }catch (Exception e){
-            throw e;
-        }finally {
-            clock.stop();
-            long totalTime = clock.getTotalTimeMillis();
-            String targetName = joinPoint.getTarget().getClass().getName();
-            String methodName = joinPoint.getSignature().getName();
-            Object[] arguments = joinPoint.getArgs();
-            Class targetClass = Class.forName(targetName);
-            Method[] methods = targetClass.getMethods();
-            String processName = new String();
-            if (methods.length>0) {
-                for (Method method : methods) {
-                    if (method.getName().equals(methodName)) {
-                        Class[] clazzs = method.getParameterTypes();
-                        if (clazzs.length == arguments.length) {
-                            if (method.getAnnotation(MethodLog.class) != null) {
-                                processName = method.getAnnotation(MethodLog.class).methodName();
-                                break;
-                            }
-                        }
-                    }
-                }
-            }
-            System.out.println(processName + " 耗时：" + totalTime + "ms");
-            LOGGER.info("耗时：" + totalTime + "ms");
-        }
+    @Pointcut("@annotation(com.mayproject.seckill.util.MethodLog)")
+    public void pointCutMethod() {
     }
 
-//    @Before("@annotation(com.mayproject.seckill.util.MethodLog)")
-//    public void before(){
-//        System.out.println("123");
-//    }
+
+
+    @Around("pointCutMethod()")
+    public Object doAround(ProceedingJoinPoint joinPoint) throws Throwable {
+        MethodSignature ms = (MethodSignature) joinPoint.getSignature();
+        Method method = ms.getMethod();
+        MethodLog methodLog = method.getAnnotation(MethodLog.class);
+        String key = methodLog.methodName();
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
+        Object o = joinPoint.proceed();
+        stopWatch.stop();
+        String result = MessageFormat.format("{0}, 耗时:{1}ms\r", key, stopWatch.getTotalTimeMillis());
+        LOGGER.info(result);
+        System.out.println(result);
+        return o;
+    }
 }
